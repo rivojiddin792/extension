@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browser Extensions Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1a1a2e;
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .top-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      background: #1C1F2E;
+      padding: 8px 12px;
+      border-radius: 10px;
+      width: fit-content;
+    }
+    
+    .top-header .icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+    }
+    
+    .top-header span {
+      font-size: 14px;
+      font-weight: medium;
+    }
+    
+    .extensions-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .extensions-filter {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .filter {
+      padding: 5px 15px;
+      border-radius: 20px;
+      background-color: #2a3550;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+    
+    .filter.active {
+      background-color: #e94560;
+      color: #fff;
+    }
+    
+    .filter:hover {
+      background-color: #3b4a6b;
+    }
+    
+    .extensions-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    
+    .extension-card {
+      background-color: #16213e;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: left;
+      transition: transform 0.2s;
+    }
+    
+    .extension-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .icon img {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 10px;
+    }
+    
+    .info h3 {
+      margin: 0 0 5px 0;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    .info p {
+      margin: 0;
+      font-size: 12px;
+      color: #a3bffa;
+      line-height: 1.4;
+    }
+    
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .remove-btn {
+      background-color: transparent;
+      border: 1px solid #e94560;
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: #e94560;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    
+    .remove-btn:hover {
+      background-color: #e94560;
+      color: #fff;
+    }
+    
+    .switch {
+      display: inline-block;
+    }
+    
+    .switch input {
+      display: none;
+    }
+    
+    .slider {
+      position: relative;
+      display: inline-block;
+      width: 34px;
+      height: 14px;
+      background-color: #ccc;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.4s;
+    }
+    
+    .slider:before {
+      content: "";
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: -3px;
+      bottom: -3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    .switch input:checked + .slider {
+      background-color: #e94560;
+    }
+    
+    .switch input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-header">
+      <div class="icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#e94560">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v4h4v2h-4v4h-2v-4H7v-2h4V7z"/>
+        </svg>
+      </div>
+      <span>Extensions</span>
+    </div>
+    
+    <div class="extensions-title">Extensions List</div>
+    
+    <div class="extensions-filter">
+      <span class="filter active" data-filter="all">All</span>
+      <span class="filter" data-filter="active">Active</span>
+      <span class="filter" data-filter="inactive">Inactive</span>
+    </div>
+    
+    <div class="extensions-list">
+      <div class="extension-card">
+        <div class="icon"><img src="logo-devlens.svg" alt=""></div>
+        <div class="info">
+          <h3>DevLens</h3>
+          <p>Quickly inspect page layouts and visualize element boundaries.</p>
+        </div>
+        <div class="actions">
+          <button class="remove-btn">Remove</button>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="extension-card">
+        <div class="icon"><img src="logo-style-spy.svg" alt=""></div>
+        <div class="info">
+          <h3>StyleSpy</h3>
+          <p>Instantly analyze and copy CSS from any webpage element.</p>
+        </div>
+        <div class="actions">
+          <button class="remove-btn">Remove</button>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="extension-card">
+        <div class="icon"><img src="logo-json-wizard.svg" alt=""></div>
+        <div class="info">
+          <h3>JSONWizard</h3>
+          <p>Formats, validates, and prettifies JSON responses in-browser.</p>
+        </div>
+        <div class="actions">
+          <button class="remove-btn">Remove</button>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="extension-card">
+        <div class="icon"><img src="logo-tab-master-pro.svg" alt=""></div>
+        <div class="info">
+          <h3>TabMaster Pro</h3>
+          <p>Organizes browser tabs into groups and sessions.</p>
+        </div>
+        <div class="actions">
+          <button class="remove-btn">Remove</button>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="extension-card">
+        <div class="icon"><img src="logo-markup-notes.svg" alt=""></div>
+        <div class="info">
+          <h3>Markup Notes</h3>
+          <p>Enables annotation and notes directly onto webpages for collaborative debugging.</p>
+        </div>
+        <div class="actions">
+          <button class="remove-btn">Remove</button>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="extension-card">
+        <div class="icon"><img src="logo-palette-picker.svg" alt=""></div>
+        <div class="info">
+          <h3>Palette Picker</h3>
+          <p>Instantly extracts color palettes from any webpage.</p>
+        </div>
+        <div class="actions">
+          <button class="remove-btn">Remove</button>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="extension-card">
+        <div class="icon"><img src="logo-link-checker.svg" alt=""></div>
+        <div class="info">
+          <h3>LinkChecker</h3>
+          <p>Scans and highlights broken links on any page.</p>
+        </div>
+        <div class="actions">
+          <button class="remove-btn">Remove</button>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="extension-card">
+        <div class="icon"><img src="logo-console-plus.svg" alt=""></div>
+        <div class="info">
+          <h3>ConsolePlus</h3>
+          <p>Enhanced developer console with advanced filtering and logging.</p>
+        </div>
+        <div class="actions">
+          <button class="remove-btn">Remove</button>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
