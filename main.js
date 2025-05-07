@@ -1,48 +1,59 @@
-  // Filter buttons
-  const filterButtons = document.querySelectorAll(".filter");
-  const extensionCards = document.querySelectorAll(".extension-card");
+document.addEventListener('DOMContentLoaded', () => {
+  const removeButtons = document.querySelectorAll('.remove-btn');
 
-  filterButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      filterButtons.forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-
-      const filter = button.dataset.filter;
-
-      extensionCards.forEach(card => {
-        const isChecked = card.querySelector('input[type="checkbox"]').checked;
-        if (filter === "all") {
-          card.style.display = "flex";
-        } else if (filter === "active" && isChecked) {
-          card.style.display = "flex";
-        } else if (filter === "inactive" && !isChecked) {
-          card.style.display = "flex";
-        } else {
-          card.style.display = "none";
-        }
-      });
-    });
-  });
-
-  // Remove button
-  const removeButtons = document.querySelectorAll(".remove-btn");
   removeButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      const card = button.closest(".extension-card");
-      card.remove();
+    button.addEventListener('click', () => {
+      const card = button.closest('.extension-card');
+      if (card) {
+        card.remove();
+      }
     });
   });
+});
 
-  // Toggle switch updates filter view dynamically
-  const switches = document.querySelectorAll('.switch input');
-  switches.forEach(sw => {
-    sw.addEventListener('change', () => {
-      const activeFilter = document.querySelector('.filter.active').dataset.filter;
-      // Trigger filter logic again
-      filterButtons.forEach(btn => {
-        if (btn.dataset.filter === activeFilter) {
-          btn.click();
+function setupFilters() {
+  const filters = document.getElementsByClassName('filter');
+  const cards = document.getElementsByClassName('extension-card');
+
+  for (let i = 0; i < filters.length; i++) {
+    filters[i].onclick = function () {
+      for (let j = 0; j < filters.length; j++) {
+        filters[j].classList.remove('active');
+      }
+      this.classList.add('active');
+
+      const filterType = this.getAttribute('data-filter');
+      for (let k = 0; k < cards.length; k++) {
+        const switchInput = cards[k].querySelector('.switch input');
+        if (filterType === 'all')
+        {
+          cards[k].style.display = 'block';
         }
-      });
-    });
-  });
+        else if (filterType === 'active')
+        {
+          if (switchInput.checked) 
+          {
+            cards[k].style.display = 'block';
+          } 
+          else 
+          {
+            cards[k].style.display = 'none';
+          }
+        }
+         else if (filterType === 'inactive') 
+          {
+          if (!switchInput.checked)
+          {
+            cards[k].style.display = 'block';
+          } 
+          else 
+          {
+            cards[k].style.display = 'none';
+          }
+        }
+      }
+    };
+  }
+}
+
+window.onload = setupFilters;
